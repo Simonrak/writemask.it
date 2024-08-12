@@ -38,10 +38,18 @@ write_protected_bits_MSIX = (
     "00000000",  # 3
 )
 
+write_protected_bits_VPD = (
+    "00000000",
+)
+
 write_protected_bits_VSC = (
     "000000ff",  # 1
     "ffffffff",  # 2
     "00000000",  # 3
+)
+
+write_protected_bits_PTH = (
+    "00000000",
 )
 
 write_protected_bits_VSEC = (
@@ -170,6 +178,7 @@ fixed_section = [
 
 writemask_dict = {
     "0x10": write_protected_bits_PCIE,
+    "0x03": write_protected_bits_VPD,
     "0x01": write_protected_bits_PM,
     "0x05": write_protected_bits_MSI,
     "0x11": write_protected_bits_MSIX,
@@ -180,6 +189,7 @@ writemask_dict = {
     "0x0018": write_protected_bits_LTR,
     "0x001E": write_protected_bits_L1PM,
     "0x000B": write_protected_bits_PTM,
+    "0x0017": write_protected_bits_PTH,
 }
 
 
