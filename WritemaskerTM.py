@@ -1,6 +1,6 @@
 import re
 
-write_protected_bits_PCIE = (
+write_protected_bits_PCIE = [
     "00000f00",  # 1
     "00000010",  # 2
     "ff7f0f00",  # 3
@@ -14,14 +14,14 @@ write_protected_bits_PCIE = (
     "ff7f0000",  # 11
     "00000000",  # 12
     "bfff2000",  # 13
-)
+]
 
-write_protected_bits_PM = (
+write_protected_bits_PM = [
     "00000000",  # 1
     "00000000",  # 2
-)
+]
 
-write_protected_bits_MSI = (
+write_protected_bits_MSI = [
     "0000f104",  # 1
     "03000000",  # 2
     "00000000",  # 3
@@ -30,28 +30,28 @@ write_protected_bits_MSI = (
     "00000000",  # 6
     "00000000",  # 7
     "ffff0000",  # 8
-)
+]
 
-write_protected_bits_MSIX = (
+write_protected_bits_MSIX = [
     "000000c0",  # 1
     "00000000",  # 2
     "00000000",  # 3
-)
+]
 
-write_protected_bits_VSC = (
+write_protected_bits_VSC = [
     "000000ff",  # 1
     "ffffffff",  # 2
     "00000000",  # 3
-)
+]
 
-write_protected_bits_VSEC = (
+write_protected_bits_VSEC = [
     "00000000",  # 1
     "00000000",  # 2
     "ffffffff",  # 3
     "ffffffff",  # 4
-)
+]
 
-write_protected_bits_AER = (
+write_protected_bits_AER = [
     "00000000",  # 1
     "31f0ff07",  # 2
     "31f0ff07",  # 3
@@ -63,32 +63,32 @@ write_protected_bits_AER = (
     "00000000",  # 9
     "00000000",  # 10
     "00000000",  # 11
-)
+]
 
-write_protected_bits_DSN = (
+write_protected_bits_DSN = [
     "00000000",  # 1
     "00000000",  # 2
     "00000000",  # 3
-)
+]
 
-write_protected_bits_LTR = (
+write_protected_bits_LTR = [
     "00000000",  # 1
     "00000000",  # 2
-)
+]
 
-write_protected_bits_L1PM = (
+write_protected_bits_L1PM = [
     "00000000",  # 1
     "00000000",  # 2
     "3f00ffe3",  # 3
     "fb000000",  # 4
-)
+]
 
-write_protected_bits_PTM = (
+write_protected_bits_PTM = [
     "00000000",  # 1
     "00000000",  # 2
     "00000000",  # 3
     "03ff0000",  # 4
-)
+]
 
 CAPABILITY_NAMES = {
     0x01: "power management",
@@ -239,6 +239,8 @@ def initialize_writemask(config_space_map):
     return ['ffffffff' for _ in config_space_map]
 
 def apply_writemask_update(writemask, update_values, start_index):
+    if not isinstance(update_values, list):
+        raise TypeError("update_values must be a list")
     end_index = min(start_index + len(update_values), len(writemask))
     writemask[start_index:end_index] = update_values[:end_index - start_index]
     return writemask
@@ -248,10 +250,13 @@ def main(file_in, file_out):
     standard_capabilities = find_standard_capabilities(config_space)
     extended_capabilities = find_extended_capabilities(extended_config_space)
     writemask = initialize_writemask(config_space)
-    writemask = apply_writemask_update(writemask, fixed_mask_section, 0)
+    
+    # Loop over the fixed_mask_section dictionary
+    for capability_id, update_values in fixed_mask_section.items():
+        writemask = apply_writemask_update(writemask, update_values, 0)
 
     for capability_id, capability_offset in standard_capabilities.items():
-        writemask_section = write_protection_masks.get(capability_id)
+        writemask_section = fixed_mask_section.get(capability_id)
         capability_start_index = capability_offset // 4
         extended_capability_offset = extended_capabilities.get(capability_id)
         extended_capability_start_index = extended_capability_offset // 4 if extended_capability_offset else None
