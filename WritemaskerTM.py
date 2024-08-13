@@ -39,7 +39,8 @@ write_protected_bits_MSIX = (
 )
 
 write_protected_bits_VPD = (
-    "00000000",
+    "000000c0",  # 1
+    "00000000",  # 2
 )
 
 write_protected_bits_VSC = (
@@ -49,7 +50,10 @@ write_protected_bits_VSC = (
 )
 
 write_protected_bits_PTH = (
-    "00000000",
+    "00000000",  # 1
+    "00000000",  # 2
+    "070c0000",  # 3
+    "ffffffff",  # 4
 )
 
 write_protected_bits_VSEC = (
