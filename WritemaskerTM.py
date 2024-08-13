@@ -266,6 +266,8 @@ def main(file_in, file_out):
 
     for cap_id, cap_start in caps.items():
         section = writemask_dict.get(cap_id)
+        if section is None:
+            continue
         cap_start_index = cap_start // 4
         wr_mask = update_writemask(wr_mask, section, cap_start_index)
 
