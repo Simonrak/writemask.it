@@ -216,10 +216,11 @@ def locate_caps(dword_map):
         cap_id = (cap_dword >> 24) & 0xFF
         next_cap = (cap_dword >> 16) & 0xFF
         cap_name = CAPABILITY_NAMES.get(cap_id, "Capability Pointer")
-
+        if cap_location == start:
+            print("Found Capabilities:")
         print(f"{hex(cap_location):<3}: {cap_name}")
         if next_cap == 0:
-            print("")
+            print("---------------------------------------")
         capabilities[f"0x{cap_id:02X}"] = cap_location
         cap_location = next_cap
 
@@ -232,8 +233,10 @@ def locate_caps(dword_map):
         ext_cap_id = ext_cap_dword_le & 0xFFFF
         next_ext_cap = (ext_cap_dword_le >> 20) & 0xFFF
         ext_cap_name = EXTENDED_CAPABILITY_NAMES.get(ext_cap_id, "Unknown")
-        
-        print(f"{hex(ext_cap_location):<3}: {ext_cap_name}")
+        if ext_cap_location == 0x100:
+            print(f"Found Extended Capabilities:")
+        else:
+            print(f"{hex(ext_cap_location):<3}: {ext_cap_name}")
         capabilities[f"0x{ext_cap_id:04X}"] = ext_cap_location
         ext_cap_location = next_ext_cap
 
