@@ -208,7 +208,6 @@ def read_cfg_space(file_path):
 
 def locate_caps(dword_map):
     capabilities = {}
-
     start = dword_map[0x34 // 4] >> 24
     cap_location = start
 
@@ -216,8 +215,11 @@ def locate_caps(dword_map):
         cap_dword = dword_map[cap_location // 4]
         cap_id = (cap_dword >> 24) & 0xFF
         next_cap = (cap_dword >> 16) & 0xFF
+        cap_name = CAPABILITY_NAMES.get(cap_id, "Capability Pointer")
 
-        print(f"Found Cap ID: 0x{cap_id:02X}, Start offset: {hex(cap_location)}, Next cap offset: {hex(next_cap)}")
+        print(f"{hex(cap_location):<3}: {cap_name}")
+        if next_cap == 0:
+            print("")
         capabilities[f"0x{cap_id:02X}"] = cap_location
         cap_location = next_cap
 
@@ -229,8 +231,9 @@ def locate_caps(dword_map):
         ext_cap_dword_le = int.from_bytes(ext_cap_dword.to_bytes(4, byteorder='big'), byteorder='little')
         ext_cap_id = ext_cap_dword_le & 0xFFFF
         next_ext_cap = (ext_cap_dword_le >> 20) & 0xFFF
-
-        print(f"Found Ext Cap ID: 0x{ext_cap_id:04X}, Start offset: {hex(ext_cap_location)}, Next cap offset: {hex(next_ext_cap)}")
+        ext_cap_name = EXTENDED_CAPABILITY_NAMES.get(ext_cap_id, "Unknown")
+        
+        print(f"{hex(ext_cap_location):<3}: {ext_cap_name}")
         capabilities[f"0x{ext_cap_id:04X}"] = ext_cap_location
         ext_cap_location = next_ext_cap
 
