@@ -224,7 +224,7 @@ def locate_caps(dword_map):
             print("Found Capabilities:")
         print(f"{hex(cap_location):<3}: {cap_name}")
         if next_cap == 0:
-            print("---------------------------------------")
+            print("-" * 40)
         capabilities[f"0x{cap_id:02X}"] = cap_location
         cap_location = next_cap
 
