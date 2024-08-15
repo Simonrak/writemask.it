@@ -1,5 +1,6 @@
 import re
 
+
 write_protected_bits_PCIE = (
     "00000f00",  # 1
     "00000010",  # 2
@@ -21,39 +22,91 @@ write_protected_bits_PM = (
     "00000000",  # 2
 )
 
-write_protected_bits_MSI = (
+write_protected_bits_MSI_ENABLED_0 = (
+    "0000f104",  # 1
+)
+
+write_protected_bits_MSI_64_bit_1 = (
     "0000f104",  # 1
     "03000000",  # 2
+    "00000000",  # 3
+    "ffff0000",  # 4
+)
+
+write_protected_bits_MSI_Multiple_Message_Capable_1 = (
+    "0000f104",  # 1
+    "03000000",  # 2
+    "00000000",  # 3
+    "ffff0000",  # 4
+    "00000000",  # 5
+    "01000000",  # 6
+)
+
+write_protected_bits_MSIX_3 = (
+    "000000c0",  # 1
+    "00000000",  # 2
+    "00000000",  # 3
+)
+
+write_protected_bits_MSIX_4 = (
+    "000000c0",  # 1
+    "00000000",  # 2
+    "00000000",  # 3
+    "00000000",  # 4
+)
+
+write_protected_bits_MSIX_5 = (
+    "000000c0",  # 1
+    "00000000",  # 2
+    "00000000",  # 3
+    "00000000",  # 4
+    "00000000",  # 5
+)
+
+write_protected_bits_MSIX_6 = (
+    "000000c0",  # 1
+    "00000000",  # 2
+    "00000000",  # 3
+    "00000000",  # 4
+    "00000000",  # 5
+    "00000000",  # 6
+)
+
+write_protected_bits_MSIX_7 = (
+    "000000c0",  # 1
+    "00000000",  # 2
     "00000000",  # 3
     "00000000",  # 4
     "00000000",  # 5
     "00000000",  # 6
     "00000000",  # 7
-    "ffff0000",  # 8
 )
 
-write_protected_bits_MSIX = (
+write_protected_bits_MSIX_8 = (
     "000000c0",  # 1
     "00000000",  # 2
     "00000000",  # 3
+    "00000000",  # 4
+    "00000000",  # 5
+    "00000000",  # 6
+    "00000000",  # 7
+    "00000000",  # 8
 )
 
 write_protected_bits_VPD = (
-    "000000c0",  # 1
-    "00000000",  # 2
+    "0000ffff",  # 1
+    "ffffffff",  # 2
 )
 
 write_protected_bits_VSC = (
     "000000ff",  # 1
     "ffffffff",  # 2
-    "00000000",  # 3
 )
 
-write_protected_bits_PTH = (
+write_protected_bits_TPH = (
     "00000000",  # 1
     "00000000",  # 2
     "070c0000",  # 3
-    "ffffffff",  # 4
 )
 
 write_protected_bits_VSEC = (
@@ -184,18 +237,61 @@ writemask_dict = {
     "0x10": write_protected_bits_PCIE,
     "0x03": write_protected_bits_VPD,
     "0x01": write_protected_bits_PM,
-    "0x05": write_protected_bits_MSI,
-    "0x11": write_protected_bits_MSIX,
+    "0x05": write_protected_bits_MSI_ENABLED_0,
+    "0x05": write_protected_bits_MSI_64_bit_1,
+    "0x05": write_protected_bits_MSI_Multiple_Message_Capable_1,
+    "0x11": write_protected_bits_MSIX_3,
+    "0x11": write_protected_bits_MSIX_4,
+    "0x11": write_protected_bits_MSIX_5,
+    "0x11": write_protected_bits_MSIX_6,
+    "0x11": write_protected_bits_MSIX_7,
+    "0x11": write_protected_bits_MSIX_8,
     "0x09": write_protected_bits_VSC,
-    "0x00A": write_protected_bits_VSEC,
+    "0x000A": write_protected_bits_VSEC,
     "0x0001": write_protected_bits_AER,
     "0x0003": write_protected_bits_DSN,
     "0x0018": write_protected_bits_LTR,
     "0x001E": write_protected_bits_L1PM,
     "0x000B": write_protected_bits_PTM,
-    "0x0017": write_protected_bits_PTH,
+    "0x0017": write_protected_bits_TPH,
 }
 
+def get_user_choice(cap_id):
+    msi_choices = {
+        '1': write_protected_bits_MSI_ENABLED_0,
+        '2': write_protected_bits_MSI_64_bit_1,
+        '3': write_protected_bits_MSI_Multiple_Message_Capable_1
+    }
+    
+    msix_choices = {
+        '1': write_protected_bits_MSIX_3,
+        '2': write_protected_bits_MSIX_4,
+        '3': write_protected_bits_MSIX_5,
+        '4': write_protected_bits_MSIX_6,
+        '5': write_protected_bits_MSIX_7,
+        '6': write_protected_bits_MSIX_8
+    }
+    
+    if cap_id == 0x05:
+        print("\nChoose MSI writemask variation:")
+        print("1. MSI Enabled: 0")
+        print("2. MSI 64 bit capable")
+        print("3. MSI 64 bit & Multiple Message capable")
+        choice = input("\nEnter choice (1/2/3): ")
+        return msi_choices.get(choice)
+    
+    if cap_id == 0x11:
+        print("\nChoose MSIX writemask variation:")
+        print("1. MSIX length: 3")
+        print("2. MSIX length: 4")
+        print("3. MSIX length: 5")
+        print("4. MSIX length: 6")
+        print("5. MSIX length: 7")
+        print("6. MSIX length: 8")
+        choice = input("\nEnter choice (1/2/3/4/5/6): ")
+        return msix_choices.get(choice)
+    
+    return None
 
 def read_cfg_space(file_path):
     dword_map = {}
@@ -266,8 +362,8 @@ def main(file_in, file_out):
 
     for cap_id, cap_start in caps.items():
         section = writemask_dict.get(cap_id)
-        if section is None:
-            continue
+        if cap_id == "0x05" or cap_id == "0x11":
+            section = get_user_choice(int(cap_id, 16))
         cap_start_index = cap_start // 4
         wr_mask = update_writemask(wr_mask, section, cap_start_index)
 
