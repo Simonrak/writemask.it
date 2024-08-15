@@ -364,6 +364,8 @@ def main(file_in, file_out):
         section = writemask_dict.get(cap_id)
         if cap_id == "0x05" or cap_id == "0x11":
             section = get_user_choice(int(cap_id, 16))
+        if section is None:
+            continue
         cap_start_index = cap_start // 4
         wr_mask = update_writemask(wr_mask, section, cap_start_index)
 
