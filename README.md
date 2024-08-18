@@ -7,8 +7,9 @@ In cmd/powershell, cd to the location and write:
     python .\WritemaskerTM.py .\pcileech_cfgspace.coe
 In this case I choose 1, since MSI is disabled:
 
-![image](https://github.com/user-attachments/assets/983bff2b-3c56-4f5f-ae86-aefdfd2e7b7a)
 ![image](https://github.com/user-attachments/assets/7dbf585a-9445-4b86-ba61-f3088feea732)
+![image](https://github.com/user-attachments/assets/983bff2b-3c56-4f5f-ae86-aefdfd2e7b7a)
+
 
 
 Length = how many dwords (rows):
