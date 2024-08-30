@@ -274,9 +274,9 @@ def get_user_choice(cap_id):
     
     if cap_id == 0x05:
         print("\nChoose MSI writemask variation:")
-        print("1. MSI Enabled: 0")
-        print("2. MSI 64 bit capable")
-        print("3. MSI 64 bit & Per Vector Masking Capable")
+        print("1. MSI length: 1")
+        print("2. MSI length: 4")
+        print("3. MSI length: 6")
         choice = input("\nEnter choice (1/2/3): ")
         return msi_choices.get(choice)
     
