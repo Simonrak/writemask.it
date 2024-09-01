@@ -335,7 +335,6 @@ def locate_caps(dword_map):
         ext_cap_name = EXTENDED_CAPABILITY_NAMES.get(ext_cap_id, "Unknown")
         if ext_cap_location == 0x100:
             print(f"Found Extended Capabilities:")
-        else:
             print(f"{hex(ext_cap_location):<3}: {ext_cap_name}")
         capabilities[f"0x{ext_cap_id:04X}"] = ext_cap_location
         ext_cap_location = next_ext_cap
