@@ -2,39 +2,39 @@ import re
 
 
 write_protected_bits_PCIE = (
-    "00000f00",  # 1
-    "00000010",  # 2
-    "ff7f0f00",  # 3
+    "00000000",  # 1
+    "00000000",  # 2
+    "ffff0000",  # 3
     "00000000",  # 4
-    "cb0d00c0",  # 5
+    "ffff0000",  # 5
     "00000000",  # 6
-    "0000ffff",  # 7
+    "00000000",  # 7
     "00000000",  # 8
     "00000000",  # 9
     "00000000",  # 10
-    "ff7f0000",  # 11
+    "ffff0000",  # 11
     "00000000",  # 12
-    "bfff2000",  # 13
+    "00000000",  # 13
 )
 
 write_protected_bits_PM = (
     "00000000",  # 1
-    "00000000",  # 2
+    "031F0000",  # 2
 )
 
 write_protected_bits_MSI_ENABLED_0 = (
-    "0000f104",  # 1
+    "00007104",  # 1
 )
 
 write_protected_bits_MSI_64_bit_1 = (
-    "0000f104",  # 1
+    "00007104",  # 1
     "03000000",  # 2
     "00000000",  # 3
     "ffff0000",  # 4
 )
 
 write_protected_bits_MSI_Multiple_Message_Capable_1 = (
-    "0000f104",  # 1
+    "00007104",  # 1
     "03000000",  # 2
     "00000000",  # 3
     "ffff0000",  # 4
@@ -118,11 +118,11 @@ write_protected_bits_VSEC = (
 
 write_protected_bits_AER = (
     "00000000",  # 1
-    "31f0ff07",  # 2
-    "31f0ff07",  # 3
-    "31f0ff07",  # 4
-    "c1f10000",  # 5
-    "c1f10000",  # 6
+    "00000000",  # 2
+    "30F0FF07",  # 3
+    "30F0FF07",  # 4
+    "00000000",  # 5
+    "C1F10000",  # 6
     "40050000",  # 7
     "00000000",  # 8
     "00000000",  # 9
@@ -154,6 +154,15 @@ write_protected_bits_PTM = (
     "00000000",  # 3
     "03ff0000",  # 4
 )
+write_protected_bits_VC =(
+    "00000000",  # 1
+    "00000000",  # 2
+    "00000000",  # 3
+    "0F000000",  # 4
+    "00000000",  # 5
+    "FF000F87",  # 6
+    "00000000",  # 7
+	)
 
 CAPABILITY_NAMES = {
     0x01: "power management",
@@ -249,6 +258,7 @@ writemask_dict = {
     "0x09": write_protected_bits_VSC,
     "0x000A": write_protected_bits_VSEC,
     "0x0001": write_protected_bits_AER,
+    "0x0002": write_protected_bits_VC,
     "0x0003": write_protected_bits_DSN,
     "0x0018": write_protected_bits_LTR,
     "0x001E": write_protected_bits_L1PM,
