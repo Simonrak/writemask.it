@@ -275,7 +275,7 @@ writemask_dict = {
 def get_user_choice(cap_id):
     msi_choices = {
         '1': write_protected_bits_MSI_ENABLED_0,
-	'2': write_protected_bits_MSI_Multiple_Message_enabled_1
+	'2': write_protected_bits_MSI_Multiple_Message_enabled_1,
         '3': write_protected_bits_MSI_64_bit_1,
         '4': write_protected_bits_MSI_Multiple_Message_Capable_1
     }
@@ -292,9 +292,10 @@ def get_user_choice(cap_id):
     if cap_id == 0x05:
         print("\nChoose MSI writemask variation:")
         print("1. MSI length: 1")
-        print("2. MSI length: 4")
-        print("3. MSI length: 6")
-        choice = input("\nEnter choice (1/2/3): ")
+        print("2. MSI length: 3")
+        print("3. MSI length: 4")
+        print("4. MSI length: 6")
+        choice = input("\nEnter choice (1/2/3/4): ")
         return msi_choices.get(choice)
     
     if cap_id == 0x11:
