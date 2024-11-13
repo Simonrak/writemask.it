@@ -8,9 +8,6 @@ In cmd/powershell, cd to the location and write:
 
 Length = how many dwords (rows):
 
-![image](https://github.com/user-attachments/assets/983bff2b-3c56-4f5f-ae86-aefdfd2e7b7a)
-
-
 
 Length = how many dwords (rows):
 
